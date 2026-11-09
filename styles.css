@@ -203,7 +203,7 @@ img { display: block; max-width: 100%; }
 .tee-card { min-width: 0; animation: card-arrive .4s both; }
 .tee-product-link { display: block; color: inherit; }
 .tee-photo-placeholder { position: relative; overflow: hidden; aspect-ratio: 4 / 5; display: grid; place-items: center; border: 1px solid #e8e5de; background: #fff; color: #77756e; }
-.tee-photo-image { position: absolute; top: 50%; left: 50%; width: 100%; height: auto; object-fit: contain; transform: translate(-50%, -50%); transition: opacity .25s ease; }
+.tee-photo-image { position: absolute; top: 50%; left: 50%; width: 100%; height: auto; object-fit: contain; transform: translate(-50%, -50%) scale(1.1); transition: opacity .4s cubic-bezier(.2,.65,.3,1), transform .4s cubic-bezier(.2,.65,.3,1); }
 .tee-photo-back { opacity: 0; }
 .tee-product-link.is-showing-back .tee-photo-back, .tee-product-link:focus-visible .tee-photo-back { opacity: 1; }
 .tee-product-link.is-showing-back .tee-photo-front, .tee-product-link:focus-visible .tee-photo-front { opacity: 0; }

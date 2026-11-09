@@ -115,6 +115,62 @@ INITIAL_PRODUCTS = (
         "isNewRelease": True,
         "isPopular": False,
     },
+    {
+        "id": "journey-of-becoming-black",
+        "name": "Journey of Becoming - Black",
+        "category": "Sweaters",
+        "price": 800,
+        "description": "",
+        "sizes": ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
+        "stock": {"XS": 5, "S": 5, "M": 5, "L": 5, "XL": 5, "2XL": 5, "3XL": 5},
+        "frontImage": "SWEATERS/Journey of Becoming - South Esquina/Journey of Becoming - Black (front).jpg",
+        "backImage": "SWEATERS/Journey of Becoming - South Esquina/Journey of Becoming - Black (back).jpg",
+        "sizeChartImage": "SWEATERS/Journey of Becoming - South Esquina/Journey of Becoming - Black (size chart).jpg",
+        "isNewRelease": True,
+        "isPopular": False,
+    },
+    {
+        "id": "journey-of-becoming-white",
+        "name": "Journey of Becoming - White",
+        "category": "Sweaters",
+        "price": 800,
+        "description": "",
+        "sizes": ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
+        "stock": {"XS": 5, "S": 5, "M": 5, "L": 5, "XL": 5, "2XL": 5, "3XL": 5},
+        "frontImage": "SWEATERS/Journey of Becoming - South Esquina/Journey of Becoming - White (front).jpg",
+        "backImage": "SWEATERS/Journey of Becoming - South Esquina/Journey of Becoming - White (back).jpg",
+        "sizeChartImage": "SWEATERS/Journey of Becoming - South Esquina/Journey of Becoming - White (size chart).jpg",
+        "isNewRelease": True,
+        "isPopular": False,
+    },
+    {
+        "id": "one-of-one-black",
+        "name": "One of One - Black",
+        "category": "Tees",
+        "price": 800,
+        "description": "",
+        "sizes": ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
+        "stock": {"XS": 5, "S": 5, "M": 5, "L": 5, "XL": 5, "2XL": 5, "3XL": 5},
+        "frontImage": "TEES/One of One - South Esquina/One of One - Black (front).jpg",
+        "backImage": "TEES/One of One - South Esquina/One of One - Black (back).jpg",
+        "sizeChartImage": "TEES/One of One - South Esquina/One of One - Black (size chart).jpg",
+        "isNewRelease": True,
+        "isPopular": False,
+    },
+    {
+        "id": "one-of-one-white",
+        "name": "One of One - White",
+        "category": "Tees",
+        "price": 800,
+        "description": "",
+        "sizes": ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
+        "stock": {"XS": 5, "S": 5, "M": 5, "L": 5, "XL": 5, "2XL": 5, "3XL": 5},
+        "frontImage": "TEES/One of One - South Esquina/One of One - White (front).jpg",
+        "backImage": "TEES/One of One - South Esquina/One of One - White (back).jpg",
+        "sizeChartImage": "TEES/One of One - South Esquina/One of One - White (size chart).jpg",
+        "isNewRelease": True,
+        "isPopular": False,
+    },
 )
 
 
@@ -275,6 +331,67 @@ def initialize_database():
             )
             connection.execute(
                 "INSERT INTO store_meta (key, value) VALUES ('live_in_wealth_products_seeded', 'true')"
+            )
+        sweater_seed_marker = connection.execute(
+            "SELECT value FROM store_meta WHERE key = 'journey_of_becoming_products_seeded'"
+        ).fetchone()
+        if not sweater_seed_marker:
+            now = utc_now()
+            connection.executemany(
+                """
+                INSERT OR IGNORE INTO products
+                (id, name, category, price, description, sizes, stock, front_image, back_image,
+                 size_chart_image, is_new_release, is_popular, created_at, updated_at)
+                VALUES (:id, :name, :category, :price, :description, :sizes, :stock, :frontImage,
+                        :backImage, :sizeChartImage, :isNewRelease, :isPopular, :created, :created)
+                """,
+                [
+                    {
+                        **product,
+                        "sizes": json.dumps(product["sizes"]),
+                        "stock": json.dumps(product["stock"]),
+                        "isNewRelease": int(product["isNewRelease"]),
+                        "isPopular": int(product["isPopular"]),
+                        "created": now,
+                    }
+                    for product in INITIAL_PRODUCTS
+                    if product["id"] in (
+                        "journey-of-becoming-black",
+                        "journey-of-becoming-white",
+                    )
+                ],
+            )
+            connection.execute(
+                "INSERT INTO store_meta (key, value) VALUES ('journey_of_becoming_products_seeded', 'true')"
+            )
+        one_of_one_seed_marker = connection.execute(
+            "SELECT value FROM store_meta WHERE key = 'one_of_one_products_seeded'"
+        ).fetchone()
+        if not one_of_one_seed_marker:
+            now = utc_now()
+            connection.executemany(
+                """
+                INSERT OR IGNORE INTO products
+                (id, name, category, price, description, sizes, stock, front_image, back_image,
+                 size_chart_image, is_new_release, is_popular, created_at, updated_at)
+                VALUES (:id, :name, :category, :price, :description, :sizes, :stock, :frontImage,
+                        :backImage, :sizeChartImage, :isNewRelease, :isPopular, :created, :created)
+                """,
+                [
+                    {
+                        **product,
+                        "sizes": json.dumps(product["sizes"]),
+                        "stock": json.dumps(product["stock"]),
+                        "isNewRelease": int(product["isNewRelease"]),
+                        "isPopular": int(product["isPopular"]),
+                        "created": now,
+                    }
+                    for product in INITIAL_PRODUCTS
+                    if product["id"] in ("one-of-one-black", "one-of-one-white")
+                ],
+            )
+            connection.execute(
+                "INSERT INTO store_meta (key, value) VALUES ('one_of_one_products_seeded', 'true')"
             )
         connection.execute("DELETE FROM admin_sessions WHERE expires_at <= ?", (utc_now(),))
         connection.execute("DELETE FROM customer_sessions WHERE expires_at <= ?", (utc_now(),))

@@ -101,6 +101,62 @@ const defaultProducts = [
     isNewRelease: true,
     isPopular: false,
   },
+  {
+    id: "journey-of-becoming-black",
+    name: "Journey of Becoming - Black",
+    category: "Sweaters",
+    price: 800,
+    description: "",
+    sizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
+    stock: { XS: 5, S: 5, M: 5, L: 5, XL: 5, "2XL": 5, "3XL": 5 },
+    frontImage: "SWEATERS/Journey of Becoming - South Esquina/Journey of Becoming - Black (front).jpg",
+    backImage: "SWEATERS/Journey of Becoming - South Esquina/Journey of Becoming - Black (back).jpg",
+    sizeChartImage: "SWEATERS/Journey of Becoming - South Esquina/Journey of Becoming - Black (size chart).jpg",
+    isNewRelease: true,
+    isPopular: false,
+  },
+  {
+    id: "journey-of-becoming-white",
+    name: "Journey of Becoming - White",
+    category: "Sweaters",
+    price: 800,
+    description: "",
+    sizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
+    stock: { XS: 5, S: 5, M: 5, L: 5, XL: 5, "2XL": 5, "3XL": 5 },
+    frontImage: "SWEATERS/Journey of Becoming - South Esquina/Journey of Becoming - White (front).jpg",
+    backImage: "SWEATERS/Journey of Becoming - South Esquina/Journey of Becoming - White (back).jpg",
+    sizeChartImage: "SWEATERS/Journey of Becoming - South Esquina/Journey of Becoming - White (size chart).jpg",
+    isNewRelease: true,
+    isPopular: false,
+  },
+  {
+    id: "one-of-one-black",
+    name: "One of One - Black",
+    category: "Tees",
+    price: 800,
+    description: "",
+    sizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
+    stock: { XS: 5, S: 5, M: 5, L: 5, XL: 5, "2XL": 5, "3XL": 5 },
+    frontImage: "TEES/One of One - South Esquina/One of One - Black (front).jpg",
+    backImage: "TEES/One of One - South Esquina/One of One - Black (back).jpg",
+    sizeChartImage: "TEES/One of One - South Esquina/One of One - Black (size chart).jpg",
+    isNewRelease: true,
+    isPopular: false,
+  },
+  {
+    id: "one-of-one-white",
+    name: "One of One - White",
+    category: "Tees",
+    price: 800,
+    description: "",
+    sizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
+    stock: { XS: 5, S: 5, M: 5, L: 5, XL: 5, "2XL": 5, "3XL": 5 },
+    frontImage: "TEES/One of One - South Esquina/One of One - White (front).jpg",
+    backImage: "TEES/One of One - South Esquina/One of One - White (back).jpg",
+    sizeChartImage: "TEES/One of One - South Esquina/One of One - White (size chart).jpg",
+    isNewRelease: true,
+    isPopular: false,
+  },
 ];
 
 let teeProducts = defaultProducts;
@@ -168,15 +224,16 @@ function addProductImage(parent, className, src, alt) {
 function createTeeCard(product) {
   const card = document.createElement("a");
   card.className = "tee-card tee-product-link";
+  card.dataset.category = product.category.toLowerCase();
   card.href = `product.html?id=${encodeURIComponent(product.id)}`;
   card.setAttribute("aria-label", `View ${product.name}`);
 
   const placeholder = document.createElement("div");
   placeholder.className = "tee-photo-placeholder";
   if (product.frontImage) {
-    addProductImage(placeholder, "tee-photo-image tee-photo-front", product.frontImage, `${product.name} tee, front view`);
+    addProductImage(placeholder, "tee-photo-image tee-photo-front", product.frontImage, `${product.name}, front view`);
     if (product.backImage) {
-      addProductImage(placeholder, "tee-photo-image tee-photo-back", product.backImage, `${product.name} tee, back view`);
+      addProductImage(placeholder, "tee-photo-image tee-photo-back", product.backImage, `${product.name}, back view`);
       card.addEventListener("pointerenter", () => card.classList.add("is-showing-back"));
       card.addEventListener("pointerleave", () => card.classList.remove("is-showing-back"));
     }
@@ -444,6 +501,9 @@ if (productDetail) {
     document.querySelector("#detailProductDescription").textContent = product.description;
     document.querySelector("#detailProductDescription").hidden = !product.description;
     document.querySelector("#detailBreadcrumbName").textContent = product.name;
+    const categoryBreadcrumb = document.querySelector("#productCategoryBreadcrumb");
+    categoryBreadcrumb.textContent = product.category;
+    categoryBreadcrumb.href = `category.html?category=${encodeURIComponent(product.category.toLowerCase())}`;
     document.querySelector("#detailGalleryLabel").textContent = product.name;
     document.querySelector("#productCategoryLabel").textContent = `SOUTH ESQUINA · ${product.category.toUpperCase()}`;
     document.querySelector("#productCollectionValue").textContent = `South Esquina · ${product.category}`;
@@ -459,7 +519,7 @@ if (productDetail) {
       const image = document.createElement("div");
       image.className = "tee-photo-placeholder viewed-product-image";
       if (viewedProduct.frontImage) {
-        addProductImage(image, "tee-photo-image", viewedProduct.frontImage, `${viewedProduct.name} tee, front view`);
+        addProductImage(image, "tee-photo-image", viewedProduct.frontImage, `${viewedProduct.name}, front view`);
       } else {
         addTextElement(image, "span", "", "PHOTO COMING SOON");
       }
